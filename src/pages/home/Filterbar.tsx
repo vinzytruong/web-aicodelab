@@ -1,20 +1,14 @@
-import React from 'react';
 import {
     Box,
     Button,
     IconButton,
-    Input,
     InputBase,
     MenuItem,
-    OutlinedInput,
     Paper,
     Select,
-    SelectChangeEvent,
     styled,
-    TextField,
     useTheme
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import TuneIcon from '@mui/icons-material/Tune';
 import ViewModuleIcon from '@mui/icons-material/ViewModule';
 import ViewListIcon from '@mui/icons-material/ViewList';

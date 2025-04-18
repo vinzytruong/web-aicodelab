@@ -3,7 +3,6 @@ import { Routes as RouterRoutes, Route } from 'react-router-dom';
 import { CsBlankLayout, CsDashboardLayout } from "../components/Layout";
 import { CsLoadable } from "../components/Loadable";
 import { type Navigation } from '@toolpad/core/AppProvider';
-import { useTranslation } from "react-i18next";
 import { Book, CalendarMonth, Home, Warehouse } from "@mui/icons-material";
 
 const AuthLogin = CsLoadable(lazy(() => import("../pages/login")));
@@ -13,12 +12,12 @@ const HomePage = CsLoadable(lazy(() => import("../pages/home")))
 
 
 export default function Routes() {
-  const { t } = useTranslation();
+
   const NAVIGATION: Navigation = [
-    // {
-    //   kind: 'header',
-    //   title: 'Animals',
-    // },
+    {
+      kind: 'header',
+      title: 'Sinh viên',
+    },
     {
       segment: 'dashboard',
       title: "Trang chủ",
@@ -29,21 +28,33 @@ export default function Routes() {
       title: "Khóa học của tôi",
       icon: <Book />,
     },
-    // {
-    //   kind: 'header',
-    //   title: 'Movies',
-    // },
-    {
-      segment: 'all-paper',
-      title: 'Lịch biểu',
-      icon: <CalendarMonth />,
-    },
     {
       segment: 'document',
       title: 'Kho học liệu',
       icon: <Warehouse />,
 
     },
+    {
+      segment: 'all-paper',
+      title: 'Lịch biểu',
+      icon: <CalendarMonth />,
+    },
+    {
+      kind: 'header',
+      title: 'Giảng viên',
+    },
+    {
+      segment: 'course-management',
+      title: 'Quản lý khóa học',
+      icon: <CalendarMonth />,
+    },
+    {
+      segment: 'document-management',
+      title: 'Quản lý học liệu',
+      icon: <CalendarMonth />,
+    },
+
+
   ];
   return (
     <RouterRoutes>

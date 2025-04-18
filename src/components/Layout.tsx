@@ -1,7 +1,7 @@
 import { AppProvider, Navigation, type Session } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Box, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { CsAccount } from './Account';
@@ -18,7 +18,7 @@ export function CsDashboardLayout(props: DemoProps) {
     const { window } = props;
     const theme = useTheme();
     const navigate = useNavigate()
-    const { pathname } = useLocation()
+
     const [session, setSession] = useState<Session | null>({
         user: {
             name: 'Truong Phuc Vinh',
@@ -49,7 +49,7 @@ export function CsDashboardLayout(props: DemoProps) {
     const demoWindow = window !== undefined ? window() : undefined;
     useEffect(() => {
         navigate(router.pathname)
-    }, [router.pathname]);
+    }, [router.pathname, navigate]);
 
     return (
         <AppProvider

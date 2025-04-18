@@ -1,7 +1,5 @@
-import { Box, Grid2, useTheme } from "@mui/material";
+import { Box, Grid2 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useTranslation } from "react-i18next";
-import { useConfig } from "../../hooks/useConfig";
 import ScheduleSlide from "./ScheduleSlide";
 import FilterBar from "./Filterbar";
 import Course from "./Course";
@@ -26,10 +24,6 @@ const StyledSlideWrapper = styled(Box)(({ theme }) => ({
 }));
 
 function HomePage() {
-    const { t } = useTranslation();
-    const { borderRadius } = useConfig();
-    const theme = useTheme();
-
     const [filters, setFilters] = useState({
         keyword: "",
         category: "", // ví dụ như "Học phần"

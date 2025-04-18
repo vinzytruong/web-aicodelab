@@ -5,7 +5,6 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { Typography, useTheme } from '@mui/material';
-import { useConfig } from '../../hooks/useConfig';
 
 // Styled Components
 const StyledSwiper = styled(Swiper)(() => ({
@@ -36,10 +35,6 @@ const Title = styled('div')(() => ({
     fontWeight: 300,
 }));
 
-const Subtitle = styled('div')(() => ({
-    fontSize: '21px',
-}));
-
 const Text = styled('div')(() => ({
     fontSize: '14px',
     maxWidth: '400px',
@@ -60,7 +55,6 @@ interface ScheduleSlideProps {
 
 function ScheduleSlide({ slides, backgroundImage }: ScheduleSlideProps) {
     const theme = useTheme()
-    const { borderRadius } = useConfig()
 
     return (
         <StyledSwiper

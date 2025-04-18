@@ -13,7 +13,7 @@ export const CsLocale = () => {
     const [language, setLanguage] = useState<string>(locale);
 
     const handleToggle = () => {
-        const lng = language == "en" ? "vn" : "en";
+        const lng = language === "en" ? "vn" : "en";
         setLanguage(lng);
         onChangeLocale(lng);
     };
@@ -39,7 +39,7 @@ export const CsLocale = () => {
                         onClick={handleToggle}
                         color="inherit"
                     >
-                        {language == 'en' ?
+                        {language === 'en' ?
                             <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-gb" viewBox="0 0 640 480">
                                 <path fill="#012169" d="M0 0h640v480H0z" />
                                 <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0z" />
@@ -78,7 +78,7 @@ export const CsLocaleV2 = () => {
     const [language, setLanguage] = useState<string>(locale);
 
     const handleToggle = () => {
-        const lng = language == "en" ? "vn" : "en";
+        const lng = language === "en" ? "vn" : "en";
         setLanguage(lng);
         onChangeLocale(lng);
     };
@@ -112,7 +112,7 @@ export const CsLocaleV2 = () => {
                         onClick={handleToggle}
                         color="inherit"
                     >
-                        {language == 'en' ?
+                        {language === 'en' ?
                             <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-gb" viewBox="0 0 640 480">
                                 <path fill="#012169" d="M0 0h640v480H0z" />
                                 <path fill="#FFF" d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0z" />
