@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { CsBlankLayout, CsDashboardLayout } from "../components/Layout";
+import { CsBlankLayout, CsDashboardLayout, DemoPageContent } from "../components/Layout";
 import { CsLoadable } from "../components/Loadable";
 import { type Navigation } from '@toolpad/core/AppProvider';
 import { Book, CalendarMonth, Home, Warehouse } from "@mui/icons-material";
@@ -58,15 +58,14 @@ export default function Routes() {
   ];
   return (
     <RouterRoutes>
-      <Route path="/" element={<CsBlankLayout />}>
-        <Route index path="/" element={<AuthLogin />} />
-        <Route path="/login" element={<AuthLogin />} />
-      </Route>
       <Route path="/" element={<CsDashboardLayout navigation={NAVIGATION} />}>
-        <Route path="/dashboard" element={<HomePage />} />
-        <Route path="/document" element={<DocumentPage />} />
-        <Route path="/my-course" element={<MyCoursePage />} />
+        <Route element={<DemoPageContent />}>
+          <Route path="dashboard" element={<HomePage />} />
+          <Route path="document" element={<DocumentPage />} />
+          <Route path="my-course" element={<MyCoursePage />} />
+        </Route>
       </Route>
+
     </RouterRoutes>
 
   )

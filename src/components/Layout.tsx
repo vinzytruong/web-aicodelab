@@ -1,64 +1,93 @@
-import { AppProvider, Navigation, type Session } from '@toolpad/core/AppProvider';
+import { AppProvider, type Session } from '@toolpad/core/AppProvider';
 import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { Box, useTheme } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Box, Typography, useTheme } from '@mui/material';
 import { CsAccount } from './Account';
 import CsSidebarFooter from './SlidebarFooter';
 import { CsToolbarActions } from './ToolbarAction';
 import { SLIDEBAR_WIDTH } from '../contants';
+import { useKeycloak } from '@react-keycloak/web';
 
 interface DemoProps {
-    window?: () => Window;
-    navigation: Navigation
+    //   window?: () => Window;
+    navigation: any;
 }
+interface MyTokenParsed {
+    name?: string;
+    email?: string;
+    picture?: string;
+}
+export function DemoPageContent() {
+    const location = useLocation();
 
+    return (
+
+        <Outlet key={location.pathname} />
+
+    );
+}
 export function CsDashboardLayout(props: DemoProps) {
-    const { window } = props;
+    const { keycloak, initialized } = useKeycloak();
     const theme = useTheme();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const router = useDemoRouter('/dashboard');
+    //   const demoWindow = window !== undefined ? window() : undefined;
 
     const [session, setSession] = useState<Session | null>({
         user: {
-            name: 'Truong Phuc Vinh',
-            email: 'vinhtruong.dev@gmail.com',
-            image: 'https://avatars.githubusercontent.com/u/19550456',
-        },
+            name: (keycloak.tokenParsed as MyTokenParsed)?.name ?? 'Guest',
+            email: (keycloak.tokenParsed as MyTokenParsed)?.email ?? '',
+            image: (keycloak.tokenParsed as MyTokenParsed)?.picture ?? '',
+        }
     });
 
-    const authentication = useMemo(() => {
-        return {
-            signIn: () => {
-                setSession({
-                    user: {
-                        name: 'Truong Phuc Vinh',
-                        email: 'vinhtruong.dev@gmail.com',
-                        image: 'https://avatars.githubusercontent.com/u/19550456',
-                    },
-                });
-            },
-            signOut: () => {
-                setSession(null);
-            },
-        };
-    }, []);
-
-    const router = useDemoRouter('/dashboard');
-
-    const demoWindow = window !== undefined ? window() : undefined;
     useEffect(() => {
-        navigate(router.pathname)
+        const parsed = keycloak.tokenParsed as MyTokenParsed | undefined;
+
+        setSession({
+            user: {
+                name: parsed?.name ?? 'Guest',
+                email: parsed?.email ?? '',
+                image: parsed?.picture ?? '',
+            },
+        });
+    }, [keycloak.token]);
+
+    const authentication = useMemo(() => ({
+        signIn: () => {
+            const parsed = keycloak.tokenParsed as MyTokenParsed | undefined;
+
+            setSession({
+                user: {
+                    name: parsed?.name ?? 'Guest',
+                    email: parsed?.email ?? '',
+                    image: parsed?.picture ?? '',
+                },
+            });
+        },
+        signOut: () => {
+            keycloak.logout();
+            setSession(null);
+        },
+    }), [keycloak.token]);
+
+    // Đồng bộ pathname từ toolpad router → react-router
+    useEffect(() => {
+        if (router.pathname !== window?.location.pathname) {
+            navigate(router.pathname);
+        }
     }, [router.pathname, navigate]);
 
     return (
         <AppProvider
             session={session}
             authentication={authentication}
-            navigation={props?.navigation}
+            navigation={props.navigation}
             router={router}
             theme={theme}
-            window={demoWindow}
+            //   window={demoWindow}
             branding={{
                 logo: <img src="https://mui.com/static/logo.png" alt="MUI logo" />,
                 title: 'MUI',
@@ -66,21 +95,18 @@ export function CsDashboardLayout(props: DemoProps) {
             }}
         >
             <DashboardLayout
-                // hideNavigation={pathname == "/dashboard"} 
                 sidebarExpandedWidth={SLIDEBAR_WIDTH}
                 slots={{
                     toolbarAccount: CsAccount,
                     sidebarFooter: CsSidebarFooter,
                     toolbarActions: CsToolbarActions,
-
                 }}
             >
                 <Box sx={{
                     p: 2,
                     flex: 1,
-                    background: theme.palette.background.default
-                }}
-                >
+                    background: theme.palette.background.default,
+                }}>
                     <Outlet />
                 </Box>
             </DashboardLayout>
@@ -88,6 +114,4 @@ export function CsDashboardLayout(props: DemoProps) {
     );
 }
 
-export const CsBlankLayout = () => (
-    <Outlet />
-);
+export const CsBlankLayout = () => <Outlet />;

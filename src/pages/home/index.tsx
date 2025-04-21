@@ -4,6 +4,8 @@ import ScheduleSlide from "./ScheduleSlide";
 import FilterBar from "./Filterbar";
 import Course from "./Course";
 import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useKeycloak } from "@react-keycloak/web";
 
 // Styled component cho container chính
 const StyledContainer = styled(Grid2)(({ theme }) => ({
@@ -47,10 +49,15 @@ function HomePage() {
             address: "Địa điểm: Phòng 201/DI"
         },
     ];
+    const { keycloak, initialized } = useKeycloak();
 
+    if (!initialized) {
+        return <div>Loading...</div>;
+    }
     return (
         <StyledContainer container spacing={2}>
             <Grid2 size={{ xs: 12 }}>
+
                 <StyledSlideWrapper>
                     <ScheduleSlide
                         slides={slideData}

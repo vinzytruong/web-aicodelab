@@ -5,14 +5,32 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import '@fontsource/k2d';
 import '@fontsource/readex-pro';
+import Keycloak from 'keycloak-js';
+import { ReactKeycloakProvider } from '@react-keycloak/web';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+
+// root.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>
+// );
+// index.tsx
+
+
+const keycloak = new (Keycloak as any)({
+  url: 'http://localhost:8001',
+  realm: 'aicodelab-realm',
+  clientId: 'aicodelab-client',
+});
+
+const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
-  <React.StrictMode>
+  <ReactKeycloakProvider authClient={keycloak} initOptions={{
+    onLoad: 'login-required',
+    checkLoginIframe: false,
+  }}>
     <App />
-  </React.StrictMode>
+  </ReactKeycloakProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

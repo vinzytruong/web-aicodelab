@@ -9,6 +9,7 @@
     "@fontsource/readex-pro": "^5.1.1",
     "@mui/icons-material": "^6.4.8",
     "@mui/material": "^6.4.8",
+    "@react-keycloak/web": "^3.4.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -22,6 +23,7 @@
     "formik": "^2.4.6",
     "i18next": "22.4.13",
     "i18next-browser-languagedetector": "^8.0.0",
+    "keycloak-js": "^26.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-force-graph-2d": "^1.27.1",
@@ -59,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@types/keycloak-js": "^2.5.4",
     "@types/react-helmet": "^6.1.11"
   }
 }
