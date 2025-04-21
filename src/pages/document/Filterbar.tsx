@@ -96,15 +96,15 @@ function FilterBar({ filters, setFilters, mode, setMode }: any) {
 
             <StyledSelect
                 size='small'
-                value={filters.category}
+                value={filters.categoryId}
                 onChange={(e) => setFilters((prev: any) => ({ ...prev, category: e.target.value }))}
                 displayEmpty
                 inputProps={{ 'aria-label': 'Tất cả học liệu' }}
             >
                 <MenuItem value="">Tất cả học liệu</MenuItem>
-                <MenuItem value="Sách">Sách</MenuItem>
-                <MenuItem value="Bài báo">Bài báo</MenuItem>
-                <MenuItem value="Slide">Slide bài giảng</MenuItem>
+                <MenuItem value={1}>Bài báo</MenuItem>
+                <MenuItem value={2}>Sách</MenuItem>
+                <MenuItem value={3}>Slide bài giảng</MenuItem>
             </StyledSelect>
 
             <SearchBar elevation={0}>

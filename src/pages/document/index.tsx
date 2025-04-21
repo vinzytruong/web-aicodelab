@@ -2,17 +2,21 @@ import { Grid2, styled } from "@mui/material";
 import FilterBar from "./Filterbar";
 import Document from "./Document";
 import { useState } from "react";
+import useDocument from "../../hooks/useDocument";
 
 const StyledContainer = styled(Grid2)(({ theme }) => ({
     padding: theme.spacing(0),
 }));
 
 function SearchPage() {
+    const { document } = useDocument()
     const [filters, setFilters] = useState({
         keyword: "",
-        category: "", // ví dụ như "Học phần"
+        categoryId: "", // ví dụ như "Học phần"
     });
     const [mode, setMode] = useState<'list' | 'grid'>('list');
+
+    console.log(document);
 
     return (
         <StyledContainer container spacing={2}>

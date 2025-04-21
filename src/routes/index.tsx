@@ -1,11 +1,10 @@
 import { lazy } from "react";
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
-import { CsBlankLayout, CsDashboardLayout, DemoPageContent } from "../components/Layout";
+import { CsDashboardLayout, DemoPageContent } from "../components/Layout";
 import { CsLoadable } from "../components/Loadable";
 import { type Navigation } from '@toolpad/core/AppProvider';
 import { Book, CalendarMonth, Home, Warehouse } from "@mui/icons-material";
 
-const AuthLogin = CsLoadable(lazy(() => import("../pages/login")));
 const DocumentPage = CsLoadable(lazy(() => import("../pages/document")))
 const MyCoursePage = CsLoadable(lazy(() => import("../pages/course")))
 const HomePage = CsLoadable(lazy(() => import("../pages/home")))

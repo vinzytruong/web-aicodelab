@@ -3,7 +3,7 @@ import { DashboardLayout } from '@toolpad/core/DashboardLayout';
 import { useDemoRouter } from '@toolpad/core/internal';
 import { useEffect, useMemo, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { CsAccount } from './Account';
 import CsSidebarFooter from './SlidebarFooter';
 import { CsToolbarActions } from './ToolbarAction';
@@ -29,11 +29,10 @@ export function DemoPageContent() {
     );
 }
 export function CsDashboardLayout(props: DemoProps) {
-    const { keycloak, initialized } = useKeycloak();
+    const { keycloak } = useKeycloak();
     const theme = useTheme();
     const navigate = useNavigate();
     const router = useDemoRouter('/dashboard');
-    //   const demoWindow = window !== undefined ? window() : undefined;
 
     const [session, setSession] = useState<Session | null>({
         user: {
@@ -53,7 +52,7 @@ export function CsDashboardLayout(props: DemoProps) {
                 image: parsed?.picture ?? '',
             },
         });
-    }, [keycloak.token]);
+    }, [keycloak.tokenParsed]);
 
     const authentication = useMemo(() => ({
         signIn: () => {
@@ -71,7 +70,7 @@ export function CsDashboardLayout(props: DemoProps) {
             keycloak.logout();
             setSession(null);
         },
-    }), [keycloak.token]);
+    }), [keycloak, setSession]);
 
     // Đồng bộ pathname từ toolpad router → react-router
     useEffect(() => {

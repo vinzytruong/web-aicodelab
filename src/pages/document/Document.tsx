@@ -6,14 +6,15 @@ import { randomColor } from "../../utils/randomColor";
 function Document({ filters, mode }: any) {
     const filteredData = DOCUMENT.filter((item) => {
         const matchKeyword = item.name.toLowerCase().includes(filters.keyword.toLowerCase());
-        const matchCategory = filters.category ? item.category === filters.category : true;
+        const matchCategory = filters.category ? item.categoryId === filters.category : true;
         return matchKeyword && matchCategory;
     });
+    console.log(DOCUMENT);
 
     return (
         <Box>
             <Grid2 container spacing={2} sx={{ width: "100%" }}>
-                {filteredData.map((item, index) => (
+                {filteredData?.map((item, index) => (
                     <Grid2 size={{ xs: 12, sm: mode === "grid" ? 4 : 12 }} key={index}>
                         <Card variant="outlined">
                             <CardActionArea>
