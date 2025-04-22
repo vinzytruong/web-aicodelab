@@ -1,4 +1,4 @@
-import { Grid2 } from "@mui/material";
+import { Grid2, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import FilterBar from "./Filterbar";
 import Course from "./Course";
@@ -17,6 +17,9 @@ function ButtonPage() {
 
     return (
         <StyledContainer container spacing={2}>
+            <Grid2 size={{ xs: 12 }}>
+                <Typography variant="h4">Khóa học của tôi</Typography>
+            </Grid2>
             <Grid2 size={{ xs: 12 }}>
                 <FilterBar filters={filters} setFilters={setFilters} mode={mode} setMode={setMode} />
             </Grid2>

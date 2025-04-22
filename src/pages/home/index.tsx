@@ -48,11 +48,13 @@ function HomePage() {
             address: "Địa điểm: Phòng 201/DI"
         },
     ];
-    const { initialized } = useKeycloak();
+    const { initialized, keycloak } = useKeycloak();
 
     if (!initialized) {
         return <div>Loading...</div>;
     }
+
+
     return (
         <StyledContainer container spacing={2}>
             <Grid2 size={{ xs: 12 }}>

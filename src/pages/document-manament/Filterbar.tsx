@@ -62,38 +62,11 @@ const SearchBar = styled(Paper)(({ theme }) => ({
     width: 280,
 }));
 
-function FilterBar({ filters, setFilters, mode, setMode }: any) {
+function FilterBar({ filters, setFilters }: any) {
     const theme = useTheme()
 
     return (
-        <Box display="flex" alignItems="center" gap={1}>
-            <BlueButton variant="contained" startIcon={<TuneIcon />}>
-                Lọc
-            </BlueButton>
-
-            <WhiteIconButton
-                onClick={() => setMode('list')}
-                sx={{
-                    border: `1px solid ${theme.palette.divider}`,
-                    backgroundColor: mode === 'grid' ? theme.palette.primary.dark : theme.palette.primary.main,
-                    color: mode === 'list' ? theme.palette.background.paper : theme.palette.primary.main,
-                }}
-            >
-                <ViewListIcon />
-
-            </WhiteIconButton>
-
-            <ModeButton
-                onClick={() => setMode('grid')}
-                sx={{
-                    border: `1px solid ${theme.palette.divider}`,
-                    backgroundColor: mode === 'list' ? theme.palette.primary.dark : theme.palette.primary.main,
-                    color: mode === 'list' ? theme.palette.primary.main : theme.palette.background.paper,
-                }}
-            >
-                <ViewModuleIcon />
-            </ModeButton>
-
+        <Box display="flex" width={"100%"} alignItems="center" justifyContent={"flex-end"} gap={1}>
             <StyledSelect
                 size='small'
                 value={filters.category}

@@ -1,4 +1,4 @@
-import { Grid2, styled } from "@mui/material";
+import { Grid2, styled, Typography } from "@mui/material";
 import FilterBar from "./Filterbar";
 import Document from "./Document";
 import { useState } from "react";
@@ -12,20 +12,21 @@ function SearchPage() {
     const { document } = useDocument()
     const [filters, setFilters] = useState({
         keyword: "",
-        categoryId: "", // ví dụ như "Học phần"
+        category: "", // ví dụ như "Học phần"
     });
     const [mode, setMode] = useState<'list' | 'grid'>('list');
 
-    console.log(document);
-
     return (
         <StyledContainer container spacing={2}>
+            <Grid2 size={{ xs: 12 }}>
+                <Typography variant="h4">Kho học liệu</Typography>
+            </Grid2>
             <Grid2 size={{ xs: 12 }}>
                 <FilterBar filters={filters} setFilters={setFilters} mode={mode} setMode={setMode} />
             </Grid2>
 
             <Grid2 size={{ xs: 12 }}>
-                <Document filters={filters} mode={mode} />
+                <Document filters={filters} mode={mode} documents={document} />
             </Grid2>
         </StyledContainer>
     );

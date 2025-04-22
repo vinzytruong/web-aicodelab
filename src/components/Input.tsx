@@ -33,6 +33,6 @@ const InputRoot = styled(OutlinedInput)(({ theme }) => ({
   }
 }))
 
-const CustomInput = ({ ...props }) => {
+export const CustomInput = ({ ...props }) => {
   return <InputRoot notched={false} {...props} />
 }
