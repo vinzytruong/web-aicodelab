@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, FormControl, MenuItem, Pagination, PaginationItem, Select, SelectChangeEvent, Stack, Table, TableBody, TableContainer, Tooltip, Typography, useTheme } from "@mui/material";
 import { EnhancedTableHead } from "./TableHead";
-import { HeadCell, Order, Document } from "./table";
+import { HeadCell, Order, Field } from "./table";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useConfig } from "../../hooks/useConfig";
@@ -10,81 +10,40 @@ import { ChevronLeft, ChevronRight, Delete, Edit } from "@mui/icons-material";
 import CustomizedDialogs from "../Dialog";
 import { countPage, getComparator, stableSort } from "../../utils/table";
 import { CustomInput } from "../Input";
-import { DocumentType } from "../../types/document";
+import useField from "../../hooks/useField";
 
 function createData(
   id: string,
-  title: string,
-  type: string,
-  // year: number,
-  author: string,
-  field: string,
-  // publisher: string,
-): Document {
+  name: string,
+): Field {
   return {
     id,
-    title,
-    type,
-    // year,
-    field,
-    // publisher,
-    author
+    name
   };
 }
 
 const headCells: readonly HeadCell[] = [
-  {
-    id: "id",
-    numeric: false,
-    disablePadding: false,
-    label: "Tên tài liệu",
-  },
 
   {
-    id: "author",
+    id: "name",
     numeric: false,
     disablePadding: false,
-    label: "Tác giả",
+    label: "Tên lĩnh vực",
   },
-  // {
-  //   id: "publisher",
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: "Nhà xuất bản",
-  // },
-  // {
-  //   id: "year",
-  //   numeric: false,
-  //   disablePadding: false,
-  //   label: "Năm xuất bản",
-  // },
-  {
-    id: "type",
-    numeric: false,
-    disablePadding: false,
-    label: "Loại học liệu",
-  },
-  {
-    id: "field",
-    numeric: false,
-    disablePadding: false,
-    label: "Lĩnh vực",
-  },
-
 ];
 
 interface TableProps {
   filters: any,
-  documents: DocumentType[],
-  isLoadingDocument: boolean
+  fields: Field[],
+  isLoadingField: boolean
 }
-function CustomDocumentTable({ documents, filters, isLoadingDocument }: TableProps) {
-  const filteredData = documents?.filter((item: any) => {
-    const matchKeyword = item.title.toLowerCase().includes(filters.keyword.toLowerCase());
+function CustomFieldTable({ fields, filters, isLoadingField }: TableProps) {
+  const filteredData = fields?.filter((item: any) => {
+    const matchKeyword = item.name.toLowerCase().includes(filters.keyword.toLowerCase());
     const matchCategory = filters.category ? item.type === filters.category : true;
     return matchKeyword && matchCategory;
   });
-  console.log("FILTER", filteredData);
+  const { deleteField } = useField()
 
 
   const theme = useTheme();
@@ -93,28 +52,23 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
 
   const [page, setPage] = useState(1);
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof Document>("id");
+  const [orderBy, setOrderBy] = useState<keyof Field>("id");
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [rowsPerPage, setRowsPerPage] = useState(ROWSPERPAGE);
   const [isOpenUpdateDialog, setOpenUpdateDialog] = useState<boolean>(false);
   const [isOpenDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
-  const [updateId, setUpdateId] = useState(0)
-  const [deleteId, setDeleteId] = useState(0)
+  const [updateId, setUpdateId] = useState("")
+  const [deleteId, setDeleteId] = useState("")
 
-  const getDocumentNameById = (id: any) => {
-    return filteredData?.find(item => item?.id === id)?.title
+  const getFieldNameById = (id: any) => {
+    return filteredData?.find(item => item?.id === id)?.name
   };
 
   const rows = useMemo(() => {
     return filteredData?.map((doct, index) => {
       return createData(
-        (index + 1).toString(),
-        doct.title,
-        doct.type,
-        // doct.year,
-        doct.author.name,
-        doct.field.name,
-        // doct.publisher,
+        doct.id,
+        doct.name
       );
     });
   }, [filteredData]);
@@ -133,7 +87,7 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Document
+    property: keyof Field
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -167,8 +121,9 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
     setOpenDeleteDialog(true)
   }
 
-  const handleDelete = (deleteId: number) => {
+  const handleDelete = async (deleteId: string) => {
     setOpenDeleteDialog(false)
+    await deleteField(deleteId)
   }
 
   return (
@@ -176,7 +131,7 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
       <ContainerTable>
 
         {/* Search and Filter */}
-        {isLoadingDocument ?
+        {isLoadingField ?
           <Box sx={{ display: "grid", placeItems: "center", height: "100px" }}>
             <Typography variant="body2">Loading ...</Typography>
           </Box>
@@ -238,23 +193,9 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
                             </StyledTableCell>
 
                             <StyledTableCell align="left">
-                              <Typography fontWeight={"inherit"} variant="body2">{row?.title || "-"}</Typography>
+                              <Typography fontWeight={"inherit"} variant="body2">{row?.name || "-"}</Typography>
                             </StyledTableCell>
-                            <StyledTableCell align="left" >
-                              <Typography fontWeight={"inherit"} variant="body2">{row?.author || "-"}</Typography>
-                            </StyledTableCell>
-                            {/* <StyledTableCell align="left" >
-                              <Typography fontWeight={"inherit"} variant="body2">{row?.publisher || "-"}</Typography>
-                            </StyledTableCell> */}
-                            {/* <StyledTableCell align="left" >
-                              <Typography fontWeight={"inherit"} variant="body2">{row?.year || "-"}</Typography>
-                            </StyledTableCell> */}
-                            <StyledTableCell align="left" >
-                              <Typography fontWeight={"inherit"} variant="body2">{row?.type || "-"}</Typography>
-                            </StyledTableCell>
-                            <StyledTableCell align="left" >
-                              <Typography fontWeight={"inherit"} variant="body2">{row?.field || "-"}</Typography>
-                            </StyledTableCell>
+
                             <StyledTableCell align="center">
                               <Box sx={{ display: "flex", justifyContent: "center", gap: 1, width: "100%" }}>
 
@@ -384,13 +325,13 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
       </ContainerTable>
       {/* Dialog */}
       <CustomizedDialogs
-        title={getDocumentNameById(updateId)!}
+        title={getFieldNameById(updateId)!}
         open={isOpenUpdateDialog}
         handleOpen={setOpenUpdateDialog}
         body={<></>}
       />
       <CustomizedDialogs
-        title={getDocumentNameById(deleteId)!}
+        title={getFieldNameById(deleteId)!}
         open={isOpenDeleteDialog}
         handleOpen={setOpenDeleteDialog}
         body={<Typography variant="body2">Bạn có chắc chắn muốn xóa cảm biến này không ? </Typography>}
@@ -408,4 +349,4 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
     </Stack>
   );
 }
-export default CustomDocumentTable;
+export default CustomFieldTable;

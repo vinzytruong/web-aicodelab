@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { createDocument, getAllDocument } from "../services/ai-assistant-service";
+import { createAuthor, deleteAuthorById, getAllAuthor } from "../services/ai-assistant-service";
 import { useKeycloak } from "@react-keycloak/web";
 import { attachAuthInterceptor } from "../services/global-config-service";
-import { DocumentType } from "../types/document";
+import { Author } from "../types/document";
 
-function useDocument() {
-    const [document, setDocument] = useState<DocumentType[]>([])
+function useAuthor() {
+    const [authors, setAuthor] = useState<Author[]>([])
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const { keycloak } = useKeycloak();
@@ -14,13 +14,14 @@ function useDocument() {
         attachAuthInterceptor(() => keycloak.token);
     }, [keycloak.token]);
 
+
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await getAllDocument();
+            const response = await getAllAuthor();
 
-            setDocument(response.data?.data);
+            setAuthor(response.data?.data);
 
         } catch (err: any) {
 
@@ -37,10 +38,11 @@ function useDocument() {
         fetchData();
     }, []);
 
-    const createNewDocument = async (doc: DocumentType) => {
+    const createNewAuthor = async (doc: Author) => {
         try {
             setLoading(true)
-            await createDocument(doc)
+            await createAuthor(doc)
+            await fetchData()
         } catch (error) {
             console.error('Error fetching GeoJSON data:', error);
             setError("Lỗi tạo trang trại")
@@ -48,8 +50,19 @@ function useDocument() {
             setLoading(false)
         }
     }
-
-    return { document, isLoadingDocument: loading, error, createNewDocument };
+    const deleteAuthor = async (authorId: string) => {
+        try {
+            setLoading(true)
+            await deleteAuthorById(authorId)
+            await fetchData()
+        } catch (error) {
+            console.error('Error fetching GeoJSON data:', error);
+            setError("Lỗi tạo trang trại")
+        } finally {
+            setLoading(false)
+        }
+    }
+    return { authors, isLoadingAuthor: loading, error, createNewAuthor, fetchDataAuthor: fetchData, deleteAuthor };
 }
 
-export default useDocument;
+export default useAuthor;

@@ -2,7 +2,7 @@ export type Order = 'asc' | 'desc';
 
 export interface EnhancedTableProps {
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Document) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Author) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
@@ -11,17 +11,13 @@ export interface EnhancedTableProps {
 
 export interface HeadCell {
     disablePadding: boolean;
-    id: keyof Document;
+    id: keyof Author;
     label: string;
     numeric: boolean;
 }
 
-export interface Document {
-    id: string,
-    title: string;
-    type: string;
-    // year: number;
-    author: string;
-    field: string;
-    // publisher: string;
+export interface Author {
+    id: string;
+    name: string;
+
 }

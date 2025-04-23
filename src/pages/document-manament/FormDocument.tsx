@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 import useDocument from '../../hooks/useDocument';
 import { DocumentType } from '../../types/document';
 import { FormikCustomInput } from '../../components';
+import useField from '../../hooks/useField';
+import useAuthor from '../../hooks/useAuthor';
 
 interface FormProps {
     id?: string,
@@ -18,6 +20,8 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
     const { t } = useTranslation()
 
     const { document, isLoadingDocument, createNewDocument } = useDocument()
+    const { fields } = useField()
+    const { authors } = useAuthor()
     const [initialValues, setInitialValues] = useState<DocumentType>()
 
 
@@ -50,10 +54,10 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
             initialValues={{
                 title: initialValues?.title,
                 type: initialValues?.type,
-                year: initialValues?.year,
-                author: initialValues?.author,
-                field: initialValues?.field,
-                publisher: initialValues?.publisher,
+                // year: initialValues?.year,
+                author_id: initialValues?.author.id,
+                field_id: initialValues?.field.id,
+                // publisher: initialValues?.publisher,
             }}
             validationSchema={Yup.object().shape({
                 title: Yup.string().max(255).required('Không được trống'),
@@ -81,20 +85,20 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
                             />
                         </Grid>
                         <Grid item xs={12} sm={12}>
-                            <Typography variant='body2' py={1}>Tác giả</Typography>
-                            <FormikCustomInput
+                            <Typography variant='body2' py={1} pb={2}>Tác giả</Typography>
+                            <Autocomplete
                                 size="small"
-                                name="author"
-                                type="text"
-                                value={values.author}
-                                onChange={(e: any) => setFieldValue("author", e.target.value)}
-                                onBlur={handleBlur}
-                                touched={touched.author}
-                                errors={errors.author}
-
+                                fullWidth
+                                disablePortal
+                                options={authors}
+                                getOptionLabel={(option) => option?.name || ''}
+                                onChange={(event, newValue) => {
+                                    setFieldValue("author_id", newValue?.id);
+                                }}
+                                renderInput={(params) => <TextField {...params} placeholder={values?.author_id} />}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={12}>
+                        {/* <Grid item xs={12} sm={12}>
                             <Typography variant='body2' py={1}>Nhà xuất bản</Typography>
                             <FormikCustomInput
                                 size="small"
@@ -107,22 +111,22 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
                                 errors={errors.publisher}
 
                             />
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12} sm={12}>
-                            <Typography variant='body2' py={1}>Lĩnh vực</Typography>
-                            <FormikCustomInput
+                            <Typography variant='body2' py={1} pb={2}>Lĩnh vực</Typography>
+                            <Autocomplete
                                 size="small"
-                                name="field"
-                                type="text"
-                                value={values.field}
-                                onChange={(e: any) => setFieldValue("field", e.target.value)}
-                                onBlur={handleBlur}
-                                touched={touched.field}
-                                errors={errors.field}
-
+                                fullWidth
+                                disablePortal
+                                options={fields}
+                                getOptionLabel={(option) => option?.name || ''}
+                                onChange={(event, newValue) => {
+                                    setFieldValue("field_id", newValue?.id);
+                                }}
+                                renderInput={(params) => <TextField {...params} placeholder={values?.field_id} />}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        {/* <Grid item xs={12} sm={6}>
                             <Typography variant='body2' py={1}>Năm xuất bản</Typography>
                             <FormikCustomInput
                                 size="small"
@@ -136,8 +140,8 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
 
 
                             />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        </Grid> */}
+                        <Grid item xs={12} sm={12}>
                             <Typography variant='body2' py={1} pb={2}>Loại học liệu</Typography>
                             <Autocomplete
                                 size="small"

@@ -28,8 +28,8 @@ function Document({ filters, mode, documents }: DocumentProps) {
                                 {mode === "grid" && <Box sx={{ height: "160px", backgroundColor: randomColor() }} />}
                                 <CardContent>
                                     <Typography variant="body1" fontWeight={600}>{item.title}</Typography>
-                                    <Typography variant="body2">Xuất bản: {item.publisher}</Typography>
-                                    <Typography variant="body2">Tác giả: {item.author}</Typography>
+                                    <Typography variant="body2">Xuất bản:</Typography>
+                                    <Typography variant="body2">Tác giả: {item.author.name}</Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>

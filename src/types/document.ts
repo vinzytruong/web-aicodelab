@@ -1,10 +1,19 @@
-export type DocumentType = {
-    id?: string,
+export interface Author {
+    id: string;
+    name: string;
+}
+
+export interface Field {
+    id: string;
+    name: string;
+}
+
+export interface DocumentType {
+    id?: string;
     title: string;
-    type: string;
-    year: number;
-    author: string;
-    field: string;
-    publisher: string;
-};
+    content: string;
+    type: string; // hoặc: 'Sách' | 'Bài báo' | 'Tài liệu' nếu bạn muốn giới hạn
+    author: Author;
+    field: Field;
+}
 

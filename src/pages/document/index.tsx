@@ -15,6 +15,7 @@ function SearchPage() {
         category: "", // ví dụ như "Học phần"
     });
     const [mode, setMode] = useState<'list' | 'grid'>('list');
+    console.log("DOCUMENT", document);
 
     return (
         <StyledContainer container spacing={2}>

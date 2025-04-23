@@ -19,19 +19,19 @@ function GraphDB({ documents }: Props) {
         const links: GraphLink[] = [];
 
         documents.forEach((doc) => {
-            const docId = `Book:${doc.title}`;
+            const docId = `Document:${doc.title}`;
             const authorId = `Author:${doc.author}`;
             const fieldId = `Field:${doc.field}`;
-            const publisherId = `Publisher:${doc.publisher}`;
+            // const publisherId = `Publisher:${doc.publisher}`;
 
             nodes.push({ id: docId, type: doc.type });
             nodes.push({ id: authorId, type: "Author" });
             nodes.push({ id: fieldId, type: "Field" });
-            nodes.push({ id: publisherId, type: "Publisher" });
+            // nodes.push({ id: publisherId, type: "Publisher" });
 
             links.push({ source: docId, target: authorId, label: "written_by" });
             links.push({ source: docId, target: fieldId, label: "in_field" });
-            links.push({ source: docId, target: publisherId, label: "published_by" });
+            // links.push({ source: docId, target: publisherId, label: "published_by" });
         });
 
         const uniqueNodes = Array.from(new Map(nodes.map((n) => [n.id, n])).values());

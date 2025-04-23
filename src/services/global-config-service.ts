@@ -4,7 +4,7 @@ import axios from 'axios';
 const AI_ASSISTANT_API_URL = process.env.REACT_APP_AI_ASSISTANT_HOST_API_URL;
 
 const aiAssistantApi = axios.create({
-    baseURL: AI_ASSISTANT_API_URL,
+    baseURL: `${AI_ASSISTANT_API_URL}/api/`,
     timeout: 10000,
 });
 
