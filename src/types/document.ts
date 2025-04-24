@@ -9,11 +9,11 @@ export interface Field {
 }
 
 export interface DocumentType {
-    id?: string;
+    id: string;
     title: string;
     content: string;
     type: string; // hoặc: 'Sách' | 'Bài báo' | 'Tài liệu' nếu bạn muốn giới hạn
-    author: Author;
+    authors: Author[];
     field: Field;
 }
 

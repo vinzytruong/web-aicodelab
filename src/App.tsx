@@ -5,6 +5,9 @@ import Routes from './routes';
 import { CsConfigProvider } from './contexts/ConfigContext';
 import { CsThemeProvider } from './themes';
 import "./locale/i18n";
+import { ToastContainer } from 'react-toastify';
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 
 interface RouterProps {
@@ -20,14 +23,28 @@ const Router: React.FC<RouterProps> = ({ children }) => {
 
 function App() {
   return (
+    <Provider store={store}>
+      <CsConfigProvider>
+        <CsThemeProvider>
+          <Router>
+            <Routes />
+          </Router>
+          <ToastContainer
+            position="top-right"
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          // theme={theme.palette.mode}
+          />
+        </CsThemeProvider>
+      </CsConfigProvider>
+    </Provider>
 
-    <CsConfigProvider>
-      <CsThemeProvider>
-        <Router>
-          <Routes />
-        </Router>
-      </CsThemeProvider>
-    </CsConfigProvider>
   );
 }
 

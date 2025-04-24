@@ -1,36 +1,35 @@
 import { useEffect, useState } from "react";
-import { createAuthor, deleteAuthorById, getAllAuthor } from "../services/ai-assistant-service";
+import { createAuthor, deleteAuthorById, getAllAuthor, updateAuthor } from "../services/ai-assistant-service";
 import { useKeycloak } from "@react-keycloak/web";
 import { attachAuthInterceptor } from "../services/global-config-service";
 import { Author } from "../types/document";
+import { toast } from "react-toastify";
+import { useAppDispatch, useAppSelector } from "../store/hook";
+import { AUTHORS_GET_ALL } from "../store/author/action";
 
 function useAuthor() {
-    const [authors, setAuthor] = useState<Author[]>([])
+    const { authors } = useAppSelector(state => state.author)
+    const { keycloak } = useKeycloak();
+    const dispatch = useAppDispatch();
+
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const { keycloak } = useKeycloak();
+
 
     useEffect(() => {
         attachAuthInterceptor(() => keycloak.token);
     }, [keycloak.token]);
-
 
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
             const response = await getAllAuthor();
-
-            setAuthor(response.data?.data);
-
+            dispatch(AUTHORS_GET_ALL({ authors: response.data?.data }));
         } catch (err: any) {
-
             setError(err.message || 'Lỗi khi gọi API');
-
         } finally {
-
             setLoading(false);
-
         }
     };
 
@@ -43,9 +42,25 @@ function useAuthor() {
             setLoading(true)
             await createAuthor(doc)
             await fetchData()
+            toast.success("Tạo thành công")
         } catch (error) {
-            console.error('Error fetching GeoJSON data:', error);
-            setError("Lỗi tạo trang trại")
+            console.error('Error fetching data:', error);
+            setError("Lỗi khi tạo")
+            toast.error("Lỗi khi tạo")
+        } finally {
+            setLoading(false)
+        }
+    }
+    const editAuthor = async (updateId: string, doc: Author) => {
+        try {
+            setLoading(true)
+            await updateAuthor(updateId, doc)
+            await fetchData()
+            toast.success("Sửa thành công")
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            setError("Lỗi khi sửa")
+            toast.error("Lỗi khi sửa")
         } finally {
             setLoading(false)
         }
@@ -55,14 +70,16 @@ function useAuthor() {
             setLoading(true)
             await deleteAuthorById(authorId)
             await fetchData()
+            toast.success("Xóa thành công")
         } catch (error) {
-            console.error('Error fetching GeoJSON data:', error);
-            setError("Lỗi tạo trang trại")
+            console.error('Error fetching data:', error);
+            setError("Lỗi khi xóa")
+            toast.error("Lỗi khi xóa")
         } finally {
             setLoading(false)
         }
     }
-    return { authors, isLoadingAuthor: loading, error, createNewAuthor, fetchDataAuthor: fetchData, deleteAuthor };
+    return { authors, isLoadingAuthor: loading, error, createNewAuthor, fetchDataAuthor: fetchData, deleteAuthor, editAuthor };
 }
 
 export default useAuthor;

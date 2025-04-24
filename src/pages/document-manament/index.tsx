@@ -20,7 +20,7 @@ const StyledContainer = styled(Grid2)(({ theme }) => ({
 function DocumentManagementPage() {
     const theme = useTheme()
     const matchUpMd = useMediaQuery(theme.breakpoints.up("md"));
-    const { document, isLoadingDocument } = useDocument()
+    const { documents, isLoadingDocument } = useDocument()
     const { fields, isLoadingField } = useField()
     const { authors, isLoadingAuthor } = useAuthor()
     const [isOpenAddDocumentDialog, setOpenAddDocumentDialog] = useState<boolean>(false);
@@ -72,7 +72,7 @@ function DocumentManagementPage() {
                         </Grid2>
                         <Grid2 size={{ xs: 12 }}>
                             <Paper sx={{ width: "100%" }}>
-                                <CustomFieldTable filters={filters} fields={fields} isLoadingField={isLoadingField} />
+                                <CustomFieldTable fields={fields} isLoadingField={isLoadingField} />
                             </Paper>
                         </Grid2>
                     </Grid2>
@@ -95,7 +95,7 @@ function DocumentManagementPage() {
                         </Grid2>
                         <Grid2 size={{ xs: 12 }}>
                             <Paper sx={{ width: "100%" }}>
-                                <CustomAuthorTable filters={filters} authors={authors} isLoadingAuthor={isLoadingAuthor} />
+                                <CustomAuthorTable authors={authors} isLoadingAuthor={isLoadingAuthor} />
                             </Paper>
                         </Grid2>
                     </Grid2>
@@ -118,7 +118,7 @@ function DocumentManagementPage() {
                         </Grid2>
                         <Grid2 size={{ xs: 12 }}>
                             <Paper sx={{ width: "100%" }}>
-                                <CustomDocumentTable filters={filters} documents={document} isLoadingDocument={isLoadingDocument} />
+                                <CustomDocumentTable filters={filters} documents={documents} isLoadingDocument={isLoadingDocument} />
                             </Paper>
                         </Grid2>
                     </Grid2>

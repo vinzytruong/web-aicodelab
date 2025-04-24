@@ -32,7 +32,7 @@ export function CsDashboardLayout(props: DemoProps) {
     const { keycloak } = useKeycloak();
     const theme = useTheme();
     const navigate = useNavigate();
-    const router = useDemoRouter('/dashboard');
+    const router = useDemoRouter('/document');
 
     const [session, setSession] = useState<Session | null>({
         user: {

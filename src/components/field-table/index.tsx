@@ -11,6 +11,7 @@ import CustomizedDialogs from "../Dialog";
 import { countPage, getComparator, stableSort } from "../../utils/table";
 import { CustomInput } from "../Input";
 import useField from "../../hooks/useField";
+import FormField from "../../pages/document-manament/FormField";
 
 function createData(
   id: string,
@@ -33,15 +34,18 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface TableProps {
-  filters: any,
+  filters?: any,
   fields: Field[],
   isLoadingField: boolean
 }
 function CustomFieldTable({ fields, filters, isLoadingField }: TableProps) {
   const filteredData = fields?.filter((item: any) => {
-    const matchKeyword = item.name.toLowerCase().includes(filters.keyword.toLowerCase());
-    const matchCategory = filters.category ? item.type === filters.category : true;
-    return matchKeyword && matchCategory;
+    if (filters) {
+      const matchKeyword = item.name.toLowerCase().includes(filters.keyword.toLowerCase());
+      const matchCategory = filters.category ? item.type === filters.category : true;
+      return matchKeyword && matchCategory;
+    }
+    return fields
   });
   const { deleteField } = useField()
 
@@ -328,7 +332,7 @@ function CustomFieldTable({ fields, filters, isLoadingField }: TableProps) {
         title={getFieldNameById(updateId)!}
         open={isOpenUpdateDialog}
         handleOpen={setOpenUpdateDialog}
-        body={<></>}
+        body={<FormField handleOpen={setOpenUpdateDialog} id={updateId} />}
       />
       <CustomizedDialogs
         title={getFieldNameById(deleteId)!}

@@ -1,46 +1,4 @@
-import {
-    Box,
-    Button,
-    IconButton,
-    InputBase,
-    MenuItem,
-    Paper,
-    Select,
-    styled,
-    useTheme
-} from '@mui/material';
-import TuneIcon from '@mui/icons-material/Tune';
-import ViewModuleIcon from '@mui/icons-material/ViewModule';
-import ViewListIcon from '@mui/icons-material/ViewList';
-
-const BlueButton = styled(Button)(({ theme }) => ({
-    background: theme.palette.primary.main,
-    color: theme.palette.text.secondary,
-    borderRadius: theme.shape.borderRadius,
-    textTransform: 'none',
-    boxShadow: "none",
-    height: "100%",
-
-    '&:hover': {
-        backgroundColor: theme.palette.primary.dark,
-    },
-}));
-
-const WhiteIconButton = styled(IconButton)(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    background: theme.palette.primary.main,
-    color: theme.palette.text.secondary,
-    padding: 6,
-}));
-
-const ModeButton = styled(IconButton)(({ theme }) => ({
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    background: theme.palette.primary.main,
-    color: theme.palette.text.secondary,
-    padding: 6,
-}));
+import { Box, MenuItem, Select, styled } from '@mui/material';
 
 const StyledSelect = styled(Select)(({ theme }) => ({
     minWidth: 320,
@@ -52,21 +10,10 @@ const StyledSelect = styled(Select)(({ theme }) => ({
     },
 }));
 
-const SearchBar = styled(Paper)(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: '#fff',
-    marginLeft: 'auto',
-    width: 280,
-}));
-
 function FilterBar({ filters, setFilters }: any) {
-    const theme = useTheme()
 
     return (
-        <Box display="flex" width={"100%"} alignItems="center" justifyContent={"flex-end"} gap={1}>
+        <Box display="flex" width={"100%"} alignItems="center" justifyContent={"flex-start"} gap={1}>
             <StyledSelect
                 size='small'
                 value={filters.category}
@@ -80,18 +27,7 @@ function FilterBar({ filters, setFilters }: any) {
                 <MenuItem value="Slide">Slide bài giảng</MenuItem>
             </StyledSelect>
 
-            <SearchBar elevation={0}>
-                <InputBase
-                    size="small"
-                    value={filters.keyword}
-                    onChange={(e) =>
-                        setFilters((prev: any) => ({ ...prev, keyword: e.target.value }))
-                    }
-                    sx={{ flex: 1, borderRadius: theme.shape.borderRadius }}
-                    placeholder="Tìm kiếm"
 
-                />
-            </SearchBar>
         </ Box>
     );
 }

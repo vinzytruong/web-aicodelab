@@ -1,7 +1,7 @@
 import { Grid2, styled, Typography } from "@mui/material";
 import FilterBar from "./Filterbar";
 import Document from "./Document";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useDocument from "../../hooks/useDocument";
 
 const StyledContainer = styled(Grid2)(({ theme }) => ({
@@ -9,13 +9,16 @@ const StyledContainer = styled(Grid2)(({ theme }) => ({
 }));
 
 function SearchPage() {
-    const { document } = useDocument()
+    const { documents, setSearchTerm } = useDocument()
     const [filters, setFilters] = useState({
         keyword: "",
         category: "", // ví dụ như "Học phần"
     });
     const [mode, setMode] = useState<'list' | 'grid'>('list');
-    console.log("DOCUMENT", document);
+
+    useEffect(() => {
+        setSearchTerm(filters.keyword);
+    }, [filters.keyword, setSearchTerm]);
 
     return (
         <StyledContainer container spacing={2}>
@@ -27,7 +30,7 @@ function SearchPage() {
             </Grid2>
 
             <Grid2 size={{ xs: 12 }}>
-                <Document filters={filters} mode={mode} documents={document} />
+                <Document filters={filters} mode={mode} documents={documents} />
             </Grid2>
         </StyledContainer>
     );

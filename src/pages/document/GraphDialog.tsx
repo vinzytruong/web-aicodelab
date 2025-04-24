@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import { GraphicEqSharp } from '@mui/icons-material';
 import CustomizedDialogs from '../../components/Dialog';
 import GraphDB from './GraphDB';
-import { GrowProps } from '@mui/material';
 import { DocumentType } from '../../types/document';
 
 interface GraphProps {

@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, FormHelperText, Grid, TextField, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 import { Field } from '../../types/document';
 import { FormikCustomInput } from '../../components';
 import useField from '../../hooks/useField';
-import useAuthor from '../../hooks/useAuthor';
 
 interface FormProps {
     id?: string,
@@ -18,12 +17,13 @@ const FormField = ({ id, handleOpen }: FormProps) => {
     const theme = useTheme()
     const { t } = useTranslation()
 
-    const { fields, isLoadingField, createNewField, fetchDataField } = useField()
+    const { fields, isLoadingField, createNewField, editField } = useField()
     const [initialValues, setInitialValues] = useState<Field>()
 
     const onSubmit = async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
         try {
-            await createNewField(values)
+            if (id) await editField(id, values)
+            else await createNewField(values)
             handleOpen(false)
         } catch (err: any) {
             if (err) {
@@ -39,9 +39,9 @@ const FormField = ({ id, handleOpen }: FormProps) => {
         if (id) setInitialValues(fields?.find(item => item.id === id))
     }, [id, fields, isLoadingField]);
 
-    if (isLoadingField) {
-        return <>Loading...</>
-    }
+    // if (isLoadingField) {
+    //     return <>Loading...</>
+    // }
 
 
     return (

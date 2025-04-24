@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, FormHelperText, Grid, Typography } from '@mui/material';
+import { Button, Grid, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -17,13 +17,14 @@ const FormAuthor = ({ id, handleOpen }: FormProps) => {
     const theme = useTheme()
     const { t } = useTranslation()
 
-    const { authors, isLoadingAuthor, createNewAuthor, fetchDataAuthor } = useAuthor()
+    const { authors, isLoadingAuthor, createNewAuthor, editAuthor } = useAuthor()
     const [initialValues, setInitialValues] = useState<Author>()
 
 
     const onSubmit = async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
         try {
-            await createNewAuthor(values)
+            if (id) await editAuthor(id, values)
+            else await createNewAuthor(values)
             handleOpen(false)
         } catch (err: any) {
             if (err) {
@@ -39,9 +40,9 @@ const FormAuthor = ({ id, handleOpen }: FormProps) => {
         if (id) setInitialValues(authors?.find(item => item.id === id))
     }, [id, authors, isLoadingAuthor]);
 
-    if (isLoadingAuthor) {
-        return <>Loading...</>
-    }
+    // if (isLoadingAuthor) {
+    //     return <>Loading...</>
+    // }
 
 
     return (

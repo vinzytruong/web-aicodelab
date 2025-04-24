@@ -55,7 +55,7 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
                 <StyledTableCell
                     align={"center"}
                     padding={'normal'}>
-                    {t("Thao tác")}
+                    Thao tác
                 </StyledTableCell>
             </TableRow>
         </TableHead>

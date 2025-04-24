@@ -1,3 +1,5 @@
+import { Author } from "../../types/document";
+
 export type Order = 'asc' | 'desc';
 
 export interface EnhancedTableProps {
@@ -21,7 +23,7 @@ export interface Document {
     title: string;
     type: string;
     // year: number;
-    author: string;
+    authors: Author[];
     field: string;
     // publisher: string;
 }

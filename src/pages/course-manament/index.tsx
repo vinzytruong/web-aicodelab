@@ -1,6 +1,4 @@
 import { Grid2, styled, Typography } from "@mui/material";
-import { useState } from "react";
-import useDocument from "../../hooks/useDocument";
 
 const StyledContainer = styled(Grid2)(({ theme }) => ({
     padding: theme.spacing(0),

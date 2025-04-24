@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, FormHelperText, Grid, TextField, Typography } from '@mui/material';
+import { Autocomplete, Button, Grid, TextField, Typography } from '@mui/material';
 import { Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
@@ -19,7 +19,7 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
     const theme = useTheme()
     const { t } = useTranslation()
 
-    const { document, isLoadingDocument, createNewDocument } = useDocument()
+    const { documents, isLoadingDocument, createNewDocument, editDocument } = useDocument()
     const { fields } = useField()
     const { authors } = useAuthor()
     const [initialValues, setInitialValues] = useState<DocumentType>()
@@ -27,7 +27,8 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
 
     const onSubmit = async (values: any, { setErrors, setStatus, setSubmitting }: any) => {
         try {
-            await createNewDocument(values)
+            if (id) await editDocument(id, values)
+            else await createNewDocument(values)
             handleOpen(false)
         } catch (err: any) {
             if (err) {
@@ -40,12 +41,12 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
     };
 
     useEffect(() => {
-        if (id) setInitialValues(document?.find(item => item.id === id))
-    }, [id, document, isLoadingDocument]);
+        if (id) setInitialValues(documents?.find(item => item.id === id))
+    }, [id, documents, isLoadingDocument]);
 
-    if (isLoadingDocument) {
-        return <>Loading...</>
-    }
+    // if (isLoadingDocument) {
+    //     return <>Loading...</>
+    // }
 
 
     return (
@@ -55,9 +56,10 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
                 title: initialValues?.title,
                 type: initialValues?.type,
                 // year: initialValues?.year,
-                author_id: initialValues?.author.id,
+                author_ids: initialValues?.authors.map(author => author.id),
                 field_id: initialValues?.field.id,
                 // publisher: initialValues?.publisher,
+                content: initialValues?.content
             }}
             validationSchema={Yup.object().shape({
                 title: Yup.string().max(255).required('Không được trống'),
@@ -86,7 +88,7 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
                         </Grid>
                         <Grid item xs={12} sm={12}>
                             <Typography variant='body2' py={1} pb={2}>Tác giả</Typography>
-                            <Autocomplete
+                            {/* <Autocomplete
                                 size="small"
                                 fullWidth
                                 disablePortal
@@ -95,23 +97,29 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
                                 onChange={(event, newValue) => {
                                     setFieldValue("author_id", newValue?.id);
                                 }}
-                                renderInput={(params) => <TextField {...params} placeholder={values?.author_id} />}
+                                renderInput={(params) => <TextField {...params} placeholder={initialValues?.author?.name} />}
+                            /> */}
+                            <Autocomplete
+                                multiple
+                                size="small"
+                                fullWidth
+                                disablePortal
+                                options={authors}
+                                getOptionLabel={(option) => option?.name || ''}
+                                onChange={(event, newValue) => {
+                                    // Lấy mảng id từ các tác giả được chọn
+                                    const authorIds = newValue.map(author => author.id);
+                                    setFieldValue("author_ids", authorIds);
+                                }}
+                                renderInput={(params) => {
+                                    // Convert author IDs to a string for the placeholder
+                                    const placeholder = initialValues?.authors?.map((author) => author.name).join(', ') || '';
+
+                                    return <TextField {...params} placeholder={placeholder} />;
+                                }}
                             />
                         </Grid>
-                        {/* <Grid item xs={12} sm={12}>
-                            <Typography variant='body2' py={1}>Nhà xuất bản</Typography>
-                            <FormikCustomInput
-                                size="small"
-                                name="publisher"
-                                type="text"
-                                value={values.publisher}
-                                onChange={(e: any) => setFieldValue("publisher", e.target.value)}
-                                onBlur={handleBlur}
-                                touched={touched.publisher}
-                                errors={errors.publisher}
 
-                            />
-                        </Grid> */}
                         <Grid item xs={12} sm={12}>
                             <Typography variant='body2' py={1} pb={2}>Lĩnh vực</Typography>
                             <Autocomplete
@@ -123,7 +131,7 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
                                 onChange={(event, newValue) => {
                                     setFieldValue("field_id", newValue?.id);
                                 }}
-                                renderInput={(params) => <TextField {...params} placeholder={values?.field_id} />}
+                                renderInput={(params) => <TextField {...params} placeholder={initialValues?.field?.name} />}
                             />
                         </Grid>
                         {/* <Grid item xs={12} sm={6}>
@@ -156,7 +164,22 @@ const FormDocument = ({ id, handleOpen }: FormProps) => {
                             />
                         </Grid>
 
+                        <Grid item xs={12} sm={12}>
+                            <Typography variant='body2' py={1}>Nội dung</Typography>
+                            <FormikCustomInput
+                                size="small"
+                                name="content"
+                                type="text"
+                                rows={8}
+                                multiline
+                                value={values.content}
+                                onChange={(e: any) => setFieldValue("content", e.target.value)}
+                                onBlur={handleBlur}
+                                touched={touched.content}
+                                errors={errors.content}
 
+                            />
+                        </Grid>
 
                         <Grid item xs={12} sm={12} textAlign={"right"}>
                             <Button

@@ -48,7 +48,7 @@ function HomePage() {
             address: "Địa điểm: Phòng 201/DI"
         },
     ];
-    const { initialized, keycloak } = useKeycloak();
+    const { initialized } = useKeycloak();
 
     if (!initialized) {
         return <div>Loading...</div>;

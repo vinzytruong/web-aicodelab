@@ -115,13 +115,13 @@ export default function componentStyleOverrides(theme: Theme, borderRadius: numb
         },
         MuiInputBase: {
             styleOverrides: {
-
                 input: {
                     color: theme.palette.text.primary,
                     '&::placeholder': {
                         color: theme.palette.text.primary,
                         fontSize: '0.875rem'
                     },
+
                     padding: "8px",
                     border: `1px solid ${theme.palette.divider}`,
                 }
@@ -133,6 +133,7 @@ export default function componentStyleOverrides(theme: Theme, borderRadius: numb
                     background: 'transparent',
                     borderRadius: `${borderRadius}px`,
                     border: 1,
+                    padding: 1,
                     '& .MuiOutlinedInput-notchedOutline': {
                         borderColor: mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[400]
                     },
@@ -147,7 +148,8 @@ export default function componentStyleOverrides(theme: Theme, borderRadius: numb
                 input: {
                     background: 'transparent',
                     borderRadius: `${borderRadius}px`,
-                    border: 1
+                    border: 1,
+                    padding: "8px",
                 },
                 inputAdornedStart: {
                     paddingLeft: 4

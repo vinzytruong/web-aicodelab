@@ -10,14 +10,16 @@ import { ChevronLeft, ChevronRight, Delete, Edit } from "@mui/icons-material";
 import CustomizedDialogs from "../Dialog";
 import { countPage, getComparator, stableSort } from "../../utils/table";
 import { CustomInput } from "../Input";
-import { DocumentType } from "../../types/document";
+import { Author, DocumentType } from "../../types/document";
+import useDocument from "../../hooks/useDocument";
+import FormDocument from "../../pages/document-manament/FormDocument";
 
 function createData(
   id: string,
   title: string,
   type: string,
   // year: number,
-  author: string,
+  authors: Author[],
   field: string,
   // publisher: string,
 ): Document {
@@ -26,22 +28,22 @@ function createData(
     title,
     type,
     // year,
-    field,
     // publisher,
-    author
+    authors,
+    field,
   };
 }
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "id",
+    id: "title",
     numeric: false,
     disablePadding: false,
     label: "Tên tài liệu",
   },
 
   {
-    id: "author",
+    id: "authors",
     numeric: false,
     disablePadding: false,
     label: "Tác giả",
@@ -74,17 +76,20 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface TableProps {
-  filters: any,
+  filters?: any,
   documents: DocumentType[],
   isLoadingDocument: boolean
 }
 function CustomDocumentTable({ documents, filters, isLoadingDocument }: TableProps) {
   const filteredData = documents?.filter((item: any) => {
-    const matchKeyword = item.title.toLowerCase().includes(filters.keyword.toLowerCase());
-    const matchCategory = filters.category ? item.type === filters.category : true;
-    return matchKeyword && matchCategory;
+    if (filters) {
+      const matchKeyword = item.title.toLowerCase().includes(filters.keyword.toLowerCase());
+      const matchCategory = filters.category ? item.type === filters.category : true;
+      return matchKeyword && matchCategory;
+    }
+    return documents
   });
-  console.log("FILTER", filteredData);
+  const { deleteDocument } = useDocument()
 
 
   const theme = useTheme();
@@ -98,8 +103,8 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
   const [rowsPerPage, setRowsPerPage] = useState(ROWSPERPAGE);
   const [isOpenUpdateDialog, setOpenUpdateDialog] = useState<boolean>(false);
   const [isOpenDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
-  const [updateId, setUpdateId] = useState(0)
-  const [deleteId, setDeleteId] = useState(0)
+  const [updateId, setUpdateId] = useState("")
+  const [deleteId, setDeleteId] = useState("")
 
   const getDocumentNameById = (id: any) => {
     return filteredData?.find(item => item?.id === id)?.title
@@ -108,12 +113,12 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
   const rows = useMemo(() => {
     return filteredData?.map((doct, index) => {
       return createData(
-        (index + 1).toString(),
+        doct.id,
         doct.title,
         doct.type,
         // doct.year,
-        doct.author.name,
-        doct.field.name,
+        doct?.authors,
+        doct?.field?.name,
         // doct.publisher,
       );
     });
@@ -167,8 +172,9 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
     setOpenDeleteDialog(true)
   }
 
-  const handleDelete = (deleteId: number) => {
+  const handleDelete = async (deleteId: string) => {
     setOpenDeleteDialog(false)
+    await deleteDocument(deleteId)
   }
 
   return (
@@ -241,7 +247,7 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
                               <Typography fontWeight={"inherit"} variant="body2">{row?.title || "-"}</Typography>
                             </StyledTableCell>
                             <StyledTableCell align="left" >
-                              <Typography fontWeight={"inherit"} variant="body2">{row?.author || "-"}</Typography>
+                              <Typography fontWeight={"inherit"} variant="body2">{row?.authors.map(author => author.name).join(", ") || "-"}</Typography>
                             </StyledTableCell>
                             {/* <StyledTableCell align="left" >
                               <Typography fontWeight={"inherit"} variant="body2">{row?.publisher || "-"}</Typography>
@@ -387,7 +393,7 @@ function CustomDocumentTable({ documents, filters, isLoadingDocument }: TablePro
         title={getDocumentNameById(updateId)!}
         open={isOpenUpdateDialog}
         handleOpen={setOpenUpdateDialog}
-        body={<></>}
+        body={<FormDocument handleOpen={setOpenUpdateDialog} id={updateId} />}
       />
       <CustomizedDialogs
         title={getDocumentNameById(deleteId)!}

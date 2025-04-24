@@ -11,6 +11,7 @@ import CustomizedDialogs from "../Dialog";
 import { countPage, getComparator, stableSort } from "../../utils/table";
 import { CustomInput } from "../Input";
 import useAuthor from "../../hooks/useAuthor";
+import FormAuthor from "../../pages/document-manament/FormAuthor";
 
 function createData(
   id: string,
@@ -33,15 +34,18 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface TableProps {
-  filters: any,
+  filters?: any,
   authors: Author[],
   isLoadingAuthor: boolean
 }
 function CustomAuthorTable({ authors, filters, isLoadingAuthor }: TableProps) {
   const filteredData = authors?.filter((item: any) => {
-    const matchKeyword = item.name.toLowerCase().includes(filters.keyword.toLowerCase());
-    const matchCategory = filters.category ? item.type === filters.category : true;
-    return matchKeyword && matchCategory;
+    if (filters) {
+      const matchKeyword = item.name.toLowerCase().includes(filters.keyword.toLowerCase());
+      const matchCategory = filters.category ? item.type === filters.category : true;
+      return matchKeyword && matchCategory;
+    }
+    return authors
   });
   const { deleteAuthor } = useAuthor()
 
@@ -329,7 +333,7 @@ function CustomAuthorTable({ authors, filters, isLoadingAuthor }: TableProps) {
         title={getAuthorNameById(updateId)!}
         open={isOpenUpdateDialog}
         handleOpen={setOpenUpdateDialog}
-        body={<></>}
+        body={<FormAuthor handleOpen={setOpenUpdateDialog} id={updateId} />}
       />
       <CustomizedDialogs
         title={getAuthorNameById(deleteId)!}

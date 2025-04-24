@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from "react";
 import ForceGraph2D from "react-force-graph-2d";
-import { GraphLink, GraphNode } from "../../types/graph";
-import { DocumentType } from "../../types/document";
+// import { GraphLink, GraphNode } from "../../types/graph";
+import { DocumentType, Author } from "../../types/document";
 
 type Props = {
     documents: DocumentType[];
 };
+export interface GraphNode {
+    id: string;
+    type: string;
+    name?: string; // Dùng để hiển thị tên trong tooltip
+}
 
+export interface GraphLink {
+    source: string;
+    target: string;
+    label: string;
+}
 function GraphDB({ documents }: Props) {
-
     const [graphData, setGraphData] = useState<{ nodes: GraphNode[]; links: GraphLink[] }>({
         nodes: [],
         links: []
@@ -19,36 +28,54 @@ function GraphDB({ documents }: Props) {
         const links: GraphLink[] = [];
 
         documents.forEach((doc) => {
-            const docId = `Document:${doc.title}`;
-            const authorId = `Author:${doc.author}`;
-            const fieldId = `Field:${doc.field}`;
-            // const publisherId = `Publisher:${doc.publisher}`;
+            const docId = `Tài liệu:${doc.id}`;
+            const fieldId = `Lĩnh vực:${doc.field.id}`;
 
-            nodes.push({ id: docId, type: doc.type });
-            nodes.push({ id: authorId, type: "Author" });
-            nodes.push({ id: fieldId, type: "Field" });
-            // nodes.push({ id: publisherId, type: "Publisher" });
+            // Node tài liệu
+            if (!nodes.find((node) => node.id === docId)) {
+                nodes.push({ id: docId, type: doc.type, name: doc.title });
+            }
 
-            links.push({ source: docId, target: authorId, label: "written_by" });
-            links.push({ source: docId, target: fieldId, label: "in_field" });
-            // links.push({ source: docId, target: publisherId, label: "published_by" });
+            // Node lĩnh vực
+            if (!nodes.find((node) => node.id === fieldId)) {
+                nodes.push({ id: fieldId, type: "Lĩnh vực", name: doc.field.name });
+            }
+
+            // Link: tài liệu -> lĩnh vực
+            if (!links.find((link) => link.source === docId && link.target === fieldId)) {
+                links.push({ source: docId, target: fieldId, label: "Thuộc lĩnh vực" });
+            }
+
+            // Tác giả
+            doc.authors.forEach((author: Author) => {
+                const authorId = `Tác giả:${author.id}`;
+
+                if (!nodes.find((node) => node.id === authorId)) {
+                    nodes.push({ id: authorId, type: "Tác giả", name: author.name });
+                }
+
+                if (!links.find((link) => link.source === docId && link.target === authorId)) {
+                    links.push({ source: docId, target: authorId, label: "Viết bởi" });
+                }
+            });
         });
 
+        // Loại bỏ trùng node
         const uniqueNodes = Array.from(new Map(nodes.map((n) => [n.id, n])).values());
         setGraphData({ nodes: uniqueNodes, links });
     }, [documents]);
 
     return (
-
         <ForceGraph2D
-            graphData={graphData}
-            nodeLabel={(node: GraphNode) => `${node.id} (${node.type})`} // Tooltip khi hover
+            graphData={graphData as any}
+            nodeLabel={(node: GraphNode) => `${node.name} (${node.type})`} // Tooltip khi hover
             linkLabel={(link: GraphLink) => link.label} // Tooltip khi hover link
             nodeAutoColorBy="type"
             linkDirectionalArrowLength={6}
             linkDirectionalArrowRelPos={1}
             backgroundColor="#f0f0f0" // Màu nền
             linkCanvasObjectMode={() => 'after'}
+
             linkCanvasObject={(link, ctx, globalScale) => {
                 const label = link.label;
                 if (!label) return;
@@ -73,8 +100,6 @@ function GraphDB({ documents }: Props) {
             height={700}               // Chiều cao cố định
             minZoom={3}
         />
-
-
     );
 }
 

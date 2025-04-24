@@ -39,19 +39,19 @@ export const searchAuthorsByName = (name: string) => aiAssistantApi.post('/autho
 export const createDocument = (article: DocumentType) => aiAssistantApi.post('/articles', article);
 
 // Lấy tất cả bài viết
-export const getAllArticles = () => aiAssistantApi.get('/articles');
+export const getAllDocuments = () => aiAssistantApi.get('/articles');
 
 // Lấy bài viết theo ID
-export const getArticleById = (id: string) => aiAssistantApi.get(`/articles/${id}`);
+export const getDocumentById = (id: string) => aiAssistantApi.get(`/articles/${id}`);
 
 // Cập nhật bài viết
-export const updateArticle = (id: string, article: DocumentType) => aiAssistantApi.put(`/articles/${id}`, article);
+export const updateDocument = (id: string, article: DocumentType) => aiAssistantApi.put(`/articles/${id}`, article);
 
 // Xoá bài viết
-export const deleteArticleById = (id: string) => aiAssistantApi.delete(`/articles/${id}`);
+export const deleteDocumentById = (id: string) => aiAssistantApi.delete(`/articles/${id}`);
 
 // Tạo bài viết từ file Excel
-export const createArticlesFromExcel = (file: File) => {
+export const createDocumentsFromExcel = (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
     return aiAssistantApi.post('/articles/excel', formData, {
@@ -60,7 +60,8 @@ export const createArticlesFromExcel = (file: File) => {
 };
 
 // Tìm bài viết theo tiêu đề chính xác
-export const getArticleByTitle = (title: string) => aiAssistantApi.get(`/articles/title/${title}`);
+export const getDocumentByTitle = (title: string) => aiAssistantApi.get(`/articles/title/${title}`);
 
 // Tìm bài viết theo tiêu đề gần đúng
-export const searchArticlesByName = (name: string) => aiAssistantApi.post('/articles/search', { name });
+export const searchDocumentsByName = (name: string) => aiAssistantApi.get('/articles/search', { params: { name } });
+

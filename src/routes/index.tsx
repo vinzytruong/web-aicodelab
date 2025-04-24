@@ -20,21 +20,21 @@ export default function Routes() {
       title: 'Sinh viên',
     },
     {
-      segment: 'dashboard',
+      segment: 'document',
       title: "Trang chủ",
       icon: <Home />,
     },
-    {
-      segment: 'my-course',
-      title: "Khóa học của tôi",
-      icon: <Book />,
-    },
-    {
-      segment: 'document',
-      title: 'Kho học liệu',
-      icon: <Warehouse />,
+    // {
+    //   segment: 'my-course',
+    //   title: "Khóa học của tôi",
+    //   icon: <Book />,
+    // },
+    // {
+    //   segment: 'document',
+    //   title: 'Kho học liệu',
+    //   icon: <Warehouse />,
 
-    },
+    // },
     // {
     //   segment: 'all-paper',
     //   title: 'Lịch biểu',
@@ -51,26 +51,26 @@ export default function Routes() {
       title: 'Giảng viên',
     },
     {
-      segment: 'dashboard',
+      segment: 'document',
       title: "Trang chủ",
       icon: <Home />,
     },
-    {
-      segment: 'my-course',
-      title: "Khóa học của tôi",
-      icon: <Book />,
-    },
-    {
-      segment: 'document',
-      title: 'Kho học liệu',
-      icon: <Warehouse />,
+    // {
+    //   segment: 'my-course',
+    //   title: "Khóa học của tôi",
+    //   icon: <Book />,
+    // },
+    // {
+    //   segment: 'document',
+    //   title: 'Kho học liệu',
+    //   icon: <Warehouse />,
 
-    },
-    {
-      segment: 'course-management',
-      title: 'Quản lý khóa học',
-      icon: <CalendarMonth />,
-    },
+    // },
+    // {
+    //   segment: 'course-management',
+    //   title: 'Quản lý khóa học',
+    //   icon: <CalendarMonth />,
+    // },
     {
       segment: 'document-management',
       title: 'Quản lý học liệu',
@@ -102,10 +102,10 @@ export default function Routes() {
           />
         }>
         <Route element={<DemoPageContent />}>
-          <Route path="dashboard" element={<HomePage />} />
+          {/* <Route path="dashboard" element={<HomePage />} /> */}
           <Route path="document" element={<DocumentPage />} />
-          <Route path="my-course" element={<MyCoursePage />} />
-          <Route path="course-management" element={<CourseManagementPage />} />
+          {/* <Route path="my-course" element={<MyCoursePage />} /> */}
+          {/* <Route path="course-management" element={<CourseManagementPage />} /> */}
           <Route path="document-management" element={<DocumentManagementPage />} />
         </Route>
       </Route>
