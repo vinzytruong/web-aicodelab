@@ -5,6 +5,7 @@ import {
     getAllDocument,
     updateDocument,
     searchDocumentsByName,
+    createDocumentsFromExcel,
 } from "../services/ai-assistant-service";
 import { useKeycloak } from "@react-keycloak/web";
 import { attachAuthInterceptor } from "../services/global-config-service";
@@ -116,6 +117,21 @@ function useDocument() {
         }
     };
 
+
+    const importDocument = async (file: any) => {
+        try {
+            setLoading(true);
+            await createDocumentsFromExcel(file);
+            await fetchData();
+            toast.success("Import thành công");
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setError("Lỗi khi import");
+            toast.error("Lỗi khi import");
+        } finally {
+            setLoading(false);
+        }
+    };
     return {
         documents,
         isLoadingDocument: loading,
@@ -125,6 +141,7 @@ function useDocument() {
         deleteDocument,
         searchTerm,
         setSearchTerm,
+        importDocument
     };
 }
 
