@@ -98,7 +98,7 @@ function GraphDB({ documents }: Props) {
             // Thiết lập chiều rộng và chiều cao cố định cho canvas
             width={1200}  // Chiều rộng theo kích thước màn hình hoặc có thể thay đổi cho phù hợp
             height={700}               // Chiều cao cố định
-            minZoom={3}
+        // minZoom={3}
         />
     );
 }
