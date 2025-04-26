@@ -11,7 +11,7 @@ import CustomizedDialogs from "../Dialog";
 import { countPage, getComparator, stableSort } from "../../utils/table";
 import { CustomInput } from "../Input";
 import useAuthor from "../../hooks/useAuthor";
-import FormAuthor from "../../pages/document-manament/FormAuthor";
+import FormAuthor from "../../pages/author-manament/FormAuthor";
 
 function createData(
   id: string,

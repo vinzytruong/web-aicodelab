@@ -11,7 +11,7 @@ import CustomizedDialogs from "../Dialog";
 import { countPage, getComparator, stableSort } from "../../utils/table";
 import { CustomInput } from "../Input";
 import useField from "../../hooks/useField";
-import FormField from "../../pages/document-manament/FormField";
+import FormField from "../../pages/field-manament/FormField";
 
 function createData(
   id: string,

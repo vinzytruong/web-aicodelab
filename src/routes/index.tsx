@@ -3,7 +3,7 @@ import { Routes as RouterRoutes, Route } from 'react-router-dom';
 import { CsDashboardLayout, DemoPageContent } from "../components/Layout";
 import { CsLoadable } from "../components/Loadable";
 import { type Navigation } from '@toolpad/core/AppProvider';
-import { Book, CalendarMonth, Home, Warehouse } from "@mui/icons-material";
+import { Book, BookOnline, CalendarMonth, DocumentScanner, Home, Person, Warehouse } from "@mui/icons-material";
 import { useKeycloak } from "@react-keycloak/web";
 
 const DocumentPage = CsLoadable(lazy(() => import("../pages/document")))
@@ -11,6 +11,8 @@ const MyCoursePage = CsLoadable(lazy(() => import("../pages/course")))
 const HomePage = CsLoadable(lazy(() => import("../pages/home")))
 const CourseManagementPage = CsLoadable(lazy(() => import("../pages/course-manament")))
 const DocumentManagementPage = CsLoadable(lazy(() => import("../pages/document-manament")))
+const FieldManagementPage = CsLoadable(lazy(() => import("../pages/field-manament")))
+const AuthorManagementPage = CsLoadable(lazy(() => import("../pages/author-manament")))
 
 export default function Routes() {
 
@@ -72,9 +74,19 @@ export default function Routes() {
     //   icon: <CalendarMonth />,
     // },
     {
+      segment: 'field-management',
+      title: 'Quản lý lĩnh vực',
+      icon: <DocumentScanner />,
+    },
+    {
+      segment: 'author-management',
+      title: 'Quản lý tác giả',
+      icon: <Person />,
+    },
+    {
       segment: 'document-management',
       title: 'Quản lý học liệu',
-      icon: <CalendarMonth />,
+      icon: <BookOnline />,
     },
 
 
@@ -107,6 +119,8 @@ export default function Routes() {
           {/* <Route path="my-course" element={<MyCoursePage />} /> */}
           {/* <Route path="course-management" element={<CourseManagementPage />} /> */}
           <Route path="document-management" element={<DocumentManagementPage />} />
+          <Route path="field-management" element={<FieldManagementPage />} />
+          <Route path="author-management" element={<AuthorManagementPage />} />
         </Route>
       </Route>
 
