@@ -338,7 +338,7 @@ function CustomFieldTable({ fields, filters, isLoadingField }: TableProps) {
         title={getFieldNameById(deleteId)!}
         open={isOpenDeleteDialog}
         handleOpen={setOpenDeleteDialog}
-        body={<Typography variant="body2">Bạn có chắc chắn muốn xóa cảm biến này không ? </Typography>}
+        body={<Typography variant="body2">Bạn có chắc chắn muốn xóa không ? </Typography>}
         actions={
           <>
             <Button variant="contained" onClick={() => handleDelete(deleteId)} sx={{ background: "red" }}>
