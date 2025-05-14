@@ -28,11 +28,11 @@ export function DemoPageContent() {
 
     );
 }
-export function CsDashboardLayout(props: DemoProps) {
+export function CsDashboardLayout() {
     const { keycloak } = useKeycloak();
     const theme = useTheme();
     const navigate = useNavigate();
-    const router = useDemoRouter('/document');
+    const router = useDemoRouter('/home');
 
     const [session, setSession] = useState<Session | null>({
         user: {
@@ -83,7 +83,7 @@ export function CsDashboardLayout(props: DemoProps) {
         <AppProvider
             session={session}
             authentication={authentication}
-            navigation={props.navigation}
+            // navigation={props.navigation}
             router={router}
             theme={theme}
             //   window={demoWindow}
@@ -94,10 +94,11 @@ export function CsDashboardLayout(props: DemoProps) {
             }}
         >
             <DashboardLayout
-                sidebarExpandedWidth={SLIDEBAR_WIDTH}
+                hideNavigation
+                // sidebarExpandedWidth={SLIDEBAR_WIDTH}
                 slots={{
                     toolbarAccount: CsAccount,
-                    sidebarFooter: CsSidebarFooter,
+                    // sidebarFooter: CsSidebarFooter,
                     toolbarActions: CsToolbarActions,
                 }}
             >
